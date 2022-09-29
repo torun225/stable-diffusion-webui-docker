@@ -33,7 +33,9 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 15f333a266c20319e2b95a47a8834adf7b914aec
+git reset --hard c715ef04d1edb1a112a602639ed3bb292fdeb0e2
+sed -i 's/@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1//' requirements.txt
+sed -i '$a git+https:\/\/github.com\/crowsonkb\/k-diffusion.git' requirements.txt
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
@@ -47,11 +49,13 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=15f333a266c20319e2b95a47a8834adf7b914aec
+ARG SHA=c715ef04d1edb1a112a602639ed3bb292fdeb0e2
 RUN <<EOF
 cd stable-diffusion-webui
-git pull --rebase
-git reset --hard ${SHA}
+# git pull --rebase
+# git reset --hard ${SHA}
+# sed -i 's/@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1//' requirements.txt
+# sed -i '$a git+https:\/\/github.com\/crowsonkb\/k-diffusion.git' requirements.txt
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
 EOF
