@@ -17,6 +17,8 @@ git reset --hard 24268930bf1dce879235a7fddd0b2355b84d7ea6
 rm -rf repositories/taming-transformers/data repositories/taming-transformers/assets
 EOF
 
+RUN git clone https://github.com/crowsonkb/k-diffusion.git repositories/k-diffusion && cd repositories/k-diffusion && git reset --hard 9e3002b7cd64df7870e08527b7664eb2f2f5f3f5
+
 
 FROM continuumio/miniconda3:4.12.0
 
@@ -33,10 +35,8 @@ RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard c715ef04d1edb1a112a602639ed3bb292fdeb0e2
-sed -i 's/@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1//' requirements.txt
-sed -i '$a git+https:\/\/github.com\/crowsonkb\/k-diffusion.git' requirements.txt
-pip install --prefer-binary --no-cache-dir -r requirements.txt
+git reset --hard 15f333a266c20319e2b95a47a8834adf7b914aec
+pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
 EOF
 
 ENV ROOT=/stable-diffusion-webui \
@@ -49,15 +49,13 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=c715ef04d1edb1a112a602639ed3bb292fdeb0e2
+ARG SHA=f80c3696f63a181f720105559d42ee53453ed0eb
 RUN <<EOF
 cd stable-diffusion-webui
-# git pull --rebase
-# git reset --hard ${SHA}
-# sed -i 's/@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1//' requirements.txt
-# sed -i '$a git+https:\/\/github.com\/crowsonkb\/k-diffusion.git' requirements.txt
-pip install --prefer-binary --no-cache-dir -r requirements.txt
+git pull --rebase
+git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
+pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
 RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
