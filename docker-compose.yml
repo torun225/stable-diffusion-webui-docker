@@ -1,18 +1,18 @@
 version: "3.9"
 
 x-base_service: &base_service
-  ports:
-    - "7860:7860"
-  volumes:
-    - &v1 ./cache:/cache
-    - &v2 ./output:/output
-  deploy:
-    resources:
-      reservations:
-        devices:
-          - driver: nvidia
-            device_ids: ["0"]
-            capabilities: [gpu]
+    ports:
+      - "7860:7860"
+    volumes:
+      - &v1 ./data:/data
+      - &v2 ./output:/output
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [gpu]
 
 name: webui-docker
 
@@ -30,7 +30,7 @@ services:
     environment:
       - CLI_ARGS=--optimized-turbo
 
-  automatic1111: &automatic
+  auto: &automatic
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
@@ -39,11 +39,10 @@ services:
       - *v2
       - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
       - ./services/AUTOMATIC1111/ui-config.json:/stable-diffusion-webui/ui-config.json
-      - ./embeddings:/stable-diffusion-webui/embeddings
     environment:
       - CLI_ARGS=--allow-code --medvram
 
-  automatic1111-cpu:
+  auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
     deploy: {}
