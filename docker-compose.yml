@@ -22,6 +22,7 @@ services:
     profiles: ["download"]
     volumes:
       - *v1
+      # ここのvolumesは多分いらない。
       - *v2
 
   hlky:
