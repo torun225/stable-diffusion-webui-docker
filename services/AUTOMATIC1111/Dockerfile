@@ -31,9 +31,9 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
-ARG SHA=d15c125db7f9c153aaf613ad5c3522d0142a36b2
+ARG SHA=f98fcf87c185b3e96b83232cb13fd2fdf1a5e981
 RUN <<EOF
-git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
+git clone https://github.com/torun225/stable-diffusion-webui.git
 cd stable-diffusion-webui
 git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
