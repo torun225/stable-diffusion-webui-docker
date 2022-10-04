@@ -31,7 +31,7 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
-ARG SHA=f98fcf87c185b3e96b83232cb13fd2fdf1a5e981
+ARG SHA=2865ef4b9ab16d56326cc805541bebcf01d099bc
 RUN <<EOF
 git clone https://github.com/torun225/stable-diffusion-webui.git
 cd stable-diffusion-webui
@@ -53,6 +53,7 @@ RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
 git reset --hard ${SHA}
+sed -i '$a clip' requirements.txt
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
@@ -69,7 +70,6 @@ ENV CLI_ARGS=""
 WORKDIR ${WORKDIR}
 EXPOSE 7860
 # run, -u to not buffer stdout / stderr
-RUN sed -i -- 's/p.ddim_eta/p.eta/g' /stable-diffusion-webui/modules/sd_samplers.py
 CMD /docker/mount.sh && \
   python3 -u ../../webui.py --listen --port 7860 --hide-ui-dir-config --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
 #  --gfpgan-models-path /data/GFPGAN --codeformer-models-path /data/Codeformer --esrgan-models-path /data/ESRGAN --bsrgan-models-path /data/BSRGAN --realesrgan-models-path /data/RealESRGAN --swinir-models-path /data/SwinIR --ldsr-models-path /data/LDSR
