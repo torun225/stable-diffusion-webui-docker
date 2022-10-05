@@ -58,7 +58,10 @@ pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
 pip install --prefer-binary --no-cache-dir -r requirements.txt
 EOF
 
-RUN pip install --prefer-binary -U --no-cache-dir opencv-python-headless
+RUN pip install --prefer-binary --no-cache-dir opencv-python-headless \
+  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
+  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+
 
 
 COPY . /docker
