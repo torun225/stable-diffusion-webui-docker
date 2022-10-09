@@ -31,9 +31,9 @@ RUN conda install pytorch==1.11.0 torchvision==0.12.0 cudatoolkit=11.3 -c pytorc
 
 RUN apt-get update && apt install fonts-dejavu-core rsync -y && apt-get clean
 
-ARG SHA=2865ef4b9ab16d56326cc805541bebcf01d099bc
+ARG SHA=2995107fa24cfd72b0a991e18271dcde148c2807
 RUN <<EOF
-git clone https://github.com/torun225/stable-diffusion-webui.git
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
 git reset --hard ${SHA}
 pip install --prefer-binary --no-cache-dir -r requirements_versions.txt
@@ -49,7 +49,6 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=2995107fa24cfd72b0a991e18271dcde148c2807
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
