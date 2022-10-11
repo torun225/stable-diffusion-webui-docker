@@ -42,7 +42,7 @@ services:
       - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
       - ./services/AUTOMATIC1111/ui-config.json:/stable-diffusion-webui/ui-config.json
     environment:
-      - CLI_ARGS=--allow-code --medvram
+      - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225
 
   auto-cpu:
     <<: *automatic
