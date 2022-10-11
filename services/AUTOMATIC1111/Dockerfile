@@ -33,7 +33,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync git -y && apt-get clea
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard ce37fdd30e9fc0fe0bc5805a068ce8b11b42b5a3
+git reset --hard dce7fc902ae2c6d9ffa71db67471abdcda72f82c
 pip install -r requirements_versions.txt
 EOF
 
@@ -47,7 +47,7 @@ RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeForme
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=ce37fdd30e9fc0fe0bc5805a068ce8b11b42b5a3
+ARG SHA=dce7fc902ae2c6d9ffa71db67471abdcda72f82c
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
