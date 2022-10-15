@@ -36,11 +36,6 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    volumes:
-      - *v1
-      - *v2
-      - ./services/AUTOMATIC1111/config.json:/stable-diffusion-webui/config.json
-      - ./services/AUTOMATIC1111/ui-config.json:/stable-diffusion-webui/ui-config.json
     environment:
       - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225
 
@@ -56,5 +51,5 @@ services:
     profiles: ["lstein"]
     build: ./services/lstein/
     environment:
-      - PRELOAD=false
+      - PRELOAD=true
       - CLI_ARGS=
