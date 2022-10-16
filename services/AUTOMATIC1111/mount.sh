@@ -36,7 +36,7 @@ for to_path in "${!MOUNTS[@]}"; do
   set -Eeuo pipefail
   from_path="${MOUNTS[${to_path}]}"
   rm -rf "${to_path}"
-  if [ -d "$from_path" ]; then
+  if [ ! -f "$from_path" ]; then
     mkdir -vp "$from_path"
   fi
   mkdir -vp "$(dirname "${to_path}")"

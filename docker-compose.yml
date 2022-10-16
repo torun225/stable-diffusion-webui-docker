@@ -31,13 +31,14 @@ services:
     build: ./services/hlky/
     environment:
       - CLI_ARGS=--optimized-turbo
+      - USE_STREAMLIT=0
 
   auto: &automatic
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
     environment:
-      - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225
+      - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers
 
   auto-cpu:
     <<: *automatic
