@@ -6,6 +6,9 @@ mkdir -p /data/config/auto/
 cp -n /docker/config.json /data/config/auto/config.json
 jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
 
+cp -n /docker/ui-config.json /data/config/auto/ui-config.json
+jq '. * input' /data/config/auto/ui-config.json /docker/ui-config.json | sponge /data/config/auto/ui-config.json
+
 declare -A MOUNTS
 
 MOUNTS["/root/.cache"]="/data/.cache"
@@ -24,6 +27,7 @@ MOUNTS["${ROOT}/models/hypernetworks"]="/data/Hypernetworks"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
+MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
