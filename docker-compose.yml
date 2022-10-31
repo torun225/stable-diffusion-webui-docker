@@ -22,8 +22,6 @@ services:
     profiles: ["download"]
     volumes:
       - *v1
-      # ここのvolumesは多分いらない。
-      - *v2
 
   hlky:
     <<: *base_service
@@ -39,6 +37,7 @@ services:
     build: ./services/AUTOMATIC1111
     environment:
       - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers
+    # tty: true
 
   auto-cpu:
     <<: *automatic

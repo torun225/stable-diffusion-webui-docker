@@ -38,7 +38,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync git -y && apt-get clea
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard dce7fc902ae2c6d9ffa71db67471abdcda72f82c
+git reset --hard bf30673f5132c8f28357b31224c54331e788d3e7
 pip install -r requirements_versions.txt
 EOF
 
@@ -56,7 +56,7 @@ RUN apt-get install jq moreutils -y
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=36a0ba357ab0742c3c4a28437b68fb29a235afbe
+ARG SHA=bf30673f5132c8f28357b31224c54331e788d3e7
 RUN <<EOF
 cd stable-diffusion-webui
 git pull --rebase
@@ -85,3 +85,5 @@ EXPOSE 7860
 # run, -u to not buffer stdout / stderr
 CMD /docker/mount.sh && \
   python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}
+
+# CMD bash
