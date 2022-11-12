@@ -20,7 +20,7 @@ RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba
   && rm -rf assets inputs
 
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
-RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git f4e99857772fc3a126ba886aadf795a332774878
+RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 60e5042ca0da89c14d1dd59d73883280f8fce991
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 
@@ -58,10 +58,17 @@ RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/
 RUN pip install --prefer-binary --no-cache-dir -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 
+ARG DEEPDANBOORU="0"
+RUN [[ "${DEEPDANBOORU:-0}" == "0" ]] && : || pip install tensorflow-cpu==2.10 tensorflow-io==0.27.0 git+https://github.com/KichangKim/DeepDanbooru.git@edf73df4cdaeea2cf00e9ac08bd8a9026b7a7b26#egg=deepdanbooru
+
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
+<<<<<<< HEAD
 ARG SHA=172c4bc09f0866e7dd114068ebe0f9abfe79ef33
+=======
+ARG SHA=ac085628540d0ec6a988fad93f5b8f2154209571
+>>>>>>> 53ac3601d73ca66ad13ee46788e3888db9363c8d
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -73,18 +80,20 @@ EOF
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  pyngrok \
-  gradio==3.4.1
-# gradio because #173 & https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/2858
+  pyngrok
 
 
 COPY . /docker
 
-RUN chmod +x /docker/entrypoint.sh && python3 /docker/info.py ${ROOT}/modules/ui.py
+RUN <<EOF
+python3 /docker/info.py ${ROOT}/modules/ui.py
+mv  ${ROOT}/style.css ${ROOT}/user.css
+sed -i 's/os.rename(tmpdir, target_dir)/shutil.move(tmpdir,target_dir)/' ${ROOT}/modules/ui_extensions.py
+EOF
 
 WORKDIR ${ROOT}/repositories/stable-diffusion
 ENV CLI_ARGS=""
 EXPOSE 7860
 ENTRYPOINT ["/docker/entrypoint.sh"]
 # run, -u to not buffer stdout / stderr
-CMD python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion --theme dark ${CLI_ARGS}
+CMD python3 -u ../../webui.py --listen --port 7860 --ckpt-dir ${ROOT}/models/Stable-diffusion ${CLI_ARGS}

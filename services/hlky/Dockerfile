@@ -25,7 +25,7 @@ EOF
 
 RUN apt-get update && apt install libsndfile1 ffmpeg -y && apt-get clean
 
-ARG BRANCH=dev SHA=d8e61a5cd3c7a6f55a3f94852f54d7c76d29c2ce
+ARG BRANCH=master SHA=09b64d4f759c44c7c6bc4d433ddd8e964d48b854
 RUN <<EOF
 cd stable-diffusion
 git fetch

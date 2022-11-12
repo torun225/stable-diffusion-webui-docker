@@ -27,7 +27,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:8
+    image: sd-auto:15
     environment:
       - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers
     # tty: true
@@ -43,7 +43,7 @@ services:
     <<: *base_service
     profiles: ["hlky"]
     build: ./services/hlky/
-    image: sd-hlky:5
+    image: sd-hlky:8
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
@@ -52,7 +52,7 @@ services:
     <<: *base_service
     profiles: ["lstein"]
     build: ./services/lstein/
-    image: sd-lstein:4
+    image: sd-lstein:5
     environment:
       - PRELOAD=true
-      - CLI_ARGS=
+      - CLI_ARGS=--max_loaded_models=1
