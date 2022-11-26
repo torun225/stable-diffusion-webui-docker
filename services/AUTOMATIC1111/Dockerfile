@@ -41,7 +41,7 @@ RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y &&
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 98947d173e3f1667eba29c904f681047dea9de90
+git reset --hard 828438b4a190759807f9054932cae3a8b880ddf1
 pip install -r requirements_versions.txt
 EOF
 
@@ -69,7 +69,7 @@ RUN pip install opencv-python-headless \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=47a44c7e421b98ca07e92dbf88769b04c9e28f86
+ARG SHA=828438b4a190759807f9054932cae3a8b880ddf1
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
