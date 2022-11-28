@@ -13,7 +13,7 @@ EOF
 RUN . /clone.sh taming-transformers https://github.com/CompVis/taming-transformers.git 24268930bf1dce879235a7fddd0b2355b84d7ea6 \
   && rm -rf data assets **/*.ipynb
 
-RUN . /clone.sh stable-diffusion https://github.com/CompVis/stable-diffusion.git 69ae4b35e0a0f6ee1af8bb9a5d0016ccb27e36dc \
+RUN . /clone.sh stable-diffusion-stability-ai https://github.com/Stability-AI/stablediffusion 47b6b607fdd31875c9279cd2f4f16b92e4ea958e \
   && rm -rf assets data/**/*.png data/**/*.jpg data/**/*.gif
 
 RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba6214284d6acd5f1719b6c5d739af \
@@ -69,7 +69,7 @@ RUN pip install opencv-python-headless \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=828438b4a190759807f9054932cae3a8b880ddf1
+ARG SHA=b5050ad2071644f7b4c99660dc66a8a95136102f
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -79,6 +79,7 @@ pip install -r requirements_versions.txt
 EOF
 
 RUN pip install opencv-python-headless
+RUN pip install open_clip_torch
 
 COPY . /docker
 
