@@ -27,7 +27,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:17.1
+    image: sd-auto:17.2
     environment:
       - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers --enable-insecure-extension-access
     # tty: true
