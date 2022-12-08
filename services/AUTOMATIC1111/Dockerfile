@@ -13,20 +13,20 @@ EOF
 RUN . /clone.sh taming-transformers https://github.com/CompVis/taming-transformers.git 24268930bf1dce879235a7fddd0b2355b84d7ea6 \
   && rm -rf data assets **/*.ipynb
 
-RUN . /clone.sh stable-diffusion-stability-ai https://github.com/Stability-AI/stablediffusion 47b6b607fdd31875c9279cd2f4f16b92e4ea958e \
+RUN . /clone.sh stable-diffusion-stability-ai https://github.com/Stability-AI/stablediffusion.git 47b6b607fdd31875c9279cd2f4f16b92e4ea958e \
   && rm -rf assets data/**/*.png data/**/*.jpg data/**/*.gif
 
 RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba6214284d6acd5f1719b6c5d739af \
   && rm -rf assets inputs
 
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
-RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 60e5042ca0da89c14d1dd59d73883280f8fce991
+RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 5b3af030dd83e0297272d861c19477735d0317ec
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 
 FROM alpine:3 as xformers
 RUN apk add aria2
-RUN aria2c --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/2.1.0/xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl'
+RUN aria2c -x 10 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/3.1.0/xformers-0.0.15.dev0+4e3631d.d20221125-cp310-cp310-linux_x86_64.whl'
 
 FROM python:3.10-slim
 
@@ -41,13 +41,13 @@ RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y &&
 RUN <<EOF
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 cd stable-diffusion-webui
-git reset --hard 828438b4a190759807f9054932cae3a8b880ddf1
+git reset --hard 98947d173e3f1667eba29c904f681047dea9de90
 pip install -r requirements_versions.txt
 EOF
 
 
-COPY --from=xformers /wheel.whl xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
-RUN pip install xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.14.dev0-cp310-cp310-linux_x86_64.whl
+COPY --from=xformers /wheel.whl xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+RUN pip install xformers-0.0.15-cp310-cp310-linux_x86_64.whl && rm xformers-0.0.15-cp310-cp310-linux_x86_64.whl
 
 
 ENV ROOT=/stable-diffusion-webui
@@ -64,6 +64,7 @@ RUN [[ "${DEEPDANBOORU:-0}" == "0" ]] && : || pip install tensorflow-cpu==2.10 t
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
+  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b \
   pyngrok
 
 # Note: don't update the sha of previous versions because the install will take forever
@@ -79,7 +80,6 @@ pip install -r requirements_versions.txt
 EOF
 
 RUN pip install opencv-python-headless
-RUN pip install open_clip_torch
 
 COPY . /docker
 
