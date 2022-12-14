@@ -64,13 +64,12 @@ RUN [[ "${DEEPDANBOORU:-0}" == "0" ]] && : || pip install tensorflow-cpu==2.10 t
 RUN pip install opencv-python-headless \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b \
   pyngrok
 
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=44c46f0ed395967cd3830dd481a2db759fda5b3b
+ARG SHA=47a44c7e421b98ca07e92dbf88769b04c9e28f86
 RUN <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -79,7 +78,7 @@ sed -i '$a clip' requirements.txt
 pip install -r requirements_versions.txt
 EOF
 
-RUN pip install opencv-python-headless
+RUN pip install opencv-python-headless transformers==4.24.0
 
 COPY . /docker
 
