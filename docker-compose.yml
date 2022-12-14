@@ -27,7 +27,7 @@ services:
     <<: *base_service
     profiles: ["auto"]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:20
+    image: sd-auto:22
     environment:
       - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers --enable-insecure-extension-access
     # tty: true
@@ -43,13 +43,14 @@ services:
     <<: *base_service
     profiles: ["sygil"]
     build: ./services/sygil/
-    image: sd-sygil:12
+    image: sd-sygil:14
     environment:
       - CLI_ARGS=--optimized-turbo
       - USE_STREAMLIT=0
 
   sygil-sl:
     <<: *sygil
+    profiles: ["sygil-sl"]
     environment:
       - USE_STREAMLIT=1
 
@@ -58,7 +59,7 @@ services:
     <<: *base_service
     profiles: ["invoke"]
     build: ./services/invoke/
-    image: sd-invoke:10
+    image: sd-invoke:13
     environment:
       - PRELOAD=true
       - CLI_ARGS=
