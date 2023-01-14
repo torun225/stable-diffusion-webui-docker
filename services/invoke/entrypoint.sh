@@ -19,7 +19,6 @@ MOUNTS["${ROOT}/models/bert-base-uncased"]=/data/.cache/huggingface/transformers
 MOUNTS["${ROOT}/models/openai/clip-vit-large-patch14"]=/data/.cache/huggingface/transformers/
 MOUNTS["${ROOT}/models/CompVis/stable-diffusion-safety-checker"]=/data/.cache/huggingface/transformers/
 
-
 MOUNTS["${ROOT}/embeddings"]=/data/embeddings/
 
 # hacks
@@ -41,7 +40,11 @@ done
 
 if "${PRELOAD}" == "true"; then
   set -Eeuo pipefail
+<<<<<<< HEAD
   python3 -u scripts/preload_models.py --no-interactive --root ${ROOT} --config_file /docker/models.yaml
+=======
+  python3 -u scripts/preload_models.py --skip-sd-weights --root ${ROOT} --config_file /docker/models.yaml
+>>>>>>> 9b1ea3cacfb80476ba68f541a505263565b26a5a
 fi
 
 exec "$@"
