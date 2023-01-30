@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=82725f0ac439f7e3b67858d55900e95330bbd326
+ARG SHA=a8322ad75b71d7805f717ca1e43bde7b637e0238
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -87,6 +87,8 @@ RUN <<EOF
 python3 /docker/info.py ${ROOT}/modules/ui.py
 mv ${ROOT}/style.css ${ROOT}/user.css
 EOF
+
+RUN pip install certipie
 
 WORKDIR ${ROOT}
 ENV CLI_ARGS=""
