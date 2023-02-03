@@ -69,7 +69,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=a8322ad75b71d7805f717ca1e43bde7b637e0238
+ARG SHA=19de2a626b92bcfe83a97477f20d0faf9b3204c0
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
