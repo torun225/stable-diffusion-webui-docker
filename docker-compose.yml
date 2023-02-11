@@ -1,20 +1,19 @@
 version: "3.9"
 
-x-base_service:
-  &base_service
-  ports:
-    - "7860:7860"
-  volumes:
-    - &v1 ./data:/data
-    - &v2 ./output:/output
-  stop_signal: SIGINT
-  deploy:
-    resources:
-      reservations:
-        devices:
-          - driver: nvidia
-            device_ids: [ '0' ]
-            capabilities: [ gpu ]
+x-base_service: &base_service
+    ports:
+      - "7860:7860"
+    volumes:
+      - &v1 ./data:/data
+      - &v2 ./output:/output
+    stop_signal: SIGINT
+    deploy:
+      resources:
+        reservations:
+          devices:
+              - driver: nvidia
+                device_ids: ['0']
+                capabilities: [gpu]
 
 name: webui-docker
 
@@ -30,13 +29,14 @@ services:
     <<: *base_service
     profiles: [ "auto" ]
     build: ./services/AUTOMATIC1111
-    image: sd-auto:42
+    image: sd-auto:44
     environment:
-      - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
   auto-cpu:
     <<: *automatic
     profiles: [ "auto-cpu" ]
     deploy: {}
     environment:
-      - CLI_ARGS=--no-half --precision full
+      - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
+

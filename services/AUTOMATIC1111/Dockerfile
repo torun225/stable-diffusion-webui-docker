@@ -68,7 +68,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: don't update the sha of previous versions because the install will take forever
 # instead, update the repo state in a later step
 
-ARG SHA=226d840e84c5f306350b0681945989b86760e616
+ARG SHA=3993aa43e95bb60b9df977946af988f119525a71
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
@@ -77,7 +77,7 @@ sed -i '$a clip' requirements.txt
 pip install -r requirements_versions.txt
 EOF
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless fastapi==0.90.1
 
 COPY . /docker
 
@@ -87,8 +87,6 @@ mv ${ROOT}/style.css ${ROOT}/user.css
 # one of the ugliest hacks I ever wrote
 sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
 EOF
-
-RUN pip install certipie
 
 WORKDIR ${ROOT}
 ENV CLI_ARGS=""
