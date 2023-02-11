@@ -77,7 +77,7 @@ sed -i '$a clip' requirements.txt
 pip install -r requirements_versions.txt
 EOF
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless fastapi==0.90.1
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless fastapi==0.90.1 certipie
 
 COPY . /docker
 
