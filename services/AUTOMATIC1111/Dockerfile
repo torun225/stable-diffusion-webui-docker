@@ -88,7 +88,8 @@ mv ${ROOT}/style.css ${ROOT}/user.css
 sed -i 's/in_app_dir = .*/in_app_dir = True/g' /usr/local/lib/python3.10/site-packages/gradio/routes.py
 EOF
 
-RUN pip install certipie
+# HTTPS認証/ControleNet
+RUN pip install certipie opencv-python prettytable
 
 WORKDIR ${ROOT}
 ENV CLI_ARGS=""
