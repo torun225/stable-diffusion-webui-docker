@@ -41,10 +41,6 @@ MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
 MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
 
-echo patch start
-# git apply --ignore-whitespace /data/config/auto/extensions/stable-diffusion-webui-two-shot/cfg_denoised_callback-ea9bd9fc.patch
-echo patch end
-
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
 
