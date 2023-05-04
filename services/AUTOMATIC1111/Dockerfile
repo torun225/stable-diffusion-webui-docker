@@ -12,7 +12,7 @@ RUN . /clone.sh CodeFormer https://github.com/sczhou/CodeFormer.git c5b4593074ba
   && rm -rf assets inputs
 
 RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f14c9f7a5b4813144b2fb9
-RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 5b3af030dd83e0297272d861c19477735d0317ec
+RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git b43db16749d51055f813255eea2fdf1def801919
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 
@@ -27,8 +27,6 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
 # RUN --mount=type=cache,target=/root/.cache/pip pip install torch==2.0.0+cu118 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-
-RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils ffmpeg -y && apt-get clean
 
