@@ -26,19 +26,17 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
 
-# RUN --mount=type=cache,target=/root/.cache/pip pip install torch==2.0.0+cu118 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
-
-RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils ffmpeg -y && apt-get clean
+RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
-  git reset --hard d7aec59c4eb02f723b3d55c6f927a42e97acd679 && \
+  git reset --hard 5ab7f213bec2f816f9c5644becb32eb72c8ffb89 && \
   pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
-  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.15-cp310-cp310-linux_x86_64.whl \
-  pip install triton /xformers-0.0.15-cp310-cp310-linux_x86_64.whl
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl \
+  pip install triton /xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl
 
 ENV ROOT=/stable-diffusion-webui
 
