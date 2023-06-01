@@ -18,25 +18,49 @@ RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interr
 
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
-RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
+RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/6.0.0/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64-pytorch201.whl'
+
 
 FROM python:3.10.9-slim
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install torch==1.13.1+cu117 torchvision --extra-index-url https://download.pytorch.org/whl/cu117
+RUN --mount=type=cache,target=/var/cache/apt \
+  apt-get update && \
+  # we need those
+  apt-get install -y fonts-dejavu-core rsync git jq moreutils aria2 \
+  # extensions needs those
+  ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev
 
+<<<<<<< HEAD
 RUN apt-get update && apt install fonts-dejavu-core rsync git jq moreutils -y && apt-get clean
+=======
+
+RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
+  aria2c -x 5 --dir /cache --out torch-2.0.1-cp310-cp310-linux_x86_64.whl -c \
+  https://download.pytorch.org/whl/cu118/torch-2.0.1%2Bcu118-cp310-cp310-linux_x86_64.whl && \
+  pip install /cache/torch-2.0.1-cp310-cp310-linux_x86_64.whl torchvision --index-url https://download.pytorch.org/whl/cu118
+
+>>>>>>> upstream/master
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
+<<<<<<< HEAD
   git reset --hard 5ab7f213bec2f816f9c5644becb32eb72c8ffb89 && \
   pip install -r requirements_versions.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip  \
   --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl \
   pip install triton /xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl
+=======
+  git reset --hard 20ae71faa8ef035c31aa3a410b707d792c8203a3 && \
+  pip install -r requirements_versions.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip  \
+  --mount=type=bind,from=xformers,source=/wheel.whl,target=/xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64.whl \
+  pip install /xformers-0.0.21.dev544-cp310-cp310-manylinux2014_x86_64.whl
+>>>>>>> upstream/master
 
 ENV ROOT=/stable-diffusion-webui
 
@@ -59,14 +83,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA=5ab7f213bec2f816f9c5644becb32eb72c8ffb89
+ARG SHA=20ae71faa8ef035c31aa3a410b707d792c8203a3
 RUN --mount=type=cache,target=/root/.cache/pip \
   cd stable-diffusion-webui && \
   git fetch && \
   git reset --hard ${SHA} && \
   pip install -r requirements_versions.txt
-
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
 
 COPY . /docker
 
