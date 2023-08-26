@@ -30,14 +30,22 @@ ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 RUN echo "deb http://ftp.jp.debian.org/debian/ bullseye main contrib non-free" > /etc/apt/sources.list
 RUN echo "deb http://deb.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list
 RUN echo "deb http://ftp.jp.debian.org/debian bullseye-updates main contrib" >> /etc/apt/sources.list
-RUN --mount=type=cache,target=/var/cache/apt apt-get install -y libsepol
+RUN --mount=type=cache,target=/var/cache/apt   apt-get update && apt-get install -y libsepol-dev
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
-  apt-get upgrade -y\
-  # we need those
-  apt-get install -y --fix-missing fonts-dejavu-core rsync git jq moreutils aria2 \
-  # extensions needs those
-  ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config libcairo2 libcairo2-dev build-essential
+  apt-get upgrade -y
+# we need those
+RUN --mount=type=cache,target=/var/cache/apt apt-get install -y --fix-missing \
+  fonts-dejavu-core rsync git jq moreutils aria2
+# extensions needs those
+RUN --mount=type=cache,target=/var/cache/apt apt-get install -y --fix-missing \
+  ffmpeg libglfw3-dev libgles2-mesa-dev pkg-config
+RUN --mount=type=cache,target=/var/cache/apt apt-get install -y --fix-missing \
+  libcairo2
+RUN --mount=type=cache,target=/var/cache/apt apt-get install -y --fix-missing \
+  libcairo2-dev
+RUN --mount=type=cache,target=/var/cache/apt apt-get install -y --fix-missing \
+  build-essential
 
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
   aria2c -x 5 --dir /cache --out torch-2.0.1-cp310-cp310-linux_x86_64.whl -c \

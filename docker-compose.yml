@@ -32,7 +32,7 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:63
     environment:
-      - CLI_ARGS=--allow-code --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --no-half-vae --medvram --deepdanbooru --gradio-auth torun225:torun225 --xformers --enable-insecure-extension-access --api
 
   auto-cpu:
     <<: *automatic
