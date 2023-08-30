@@ -40,3 +40,19 @@ services:
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
+
+  comfy: &comfy
+    <<: *base_service
+    profiles: ["comfy"]
+    build: ./services/comfy/
+    image: sd-comfy:4
+    environment:
+      - CLI_ARGS=
+
+
+  comfy-cpu:
+    <<: *comfy
+    profiles: ["comfy-cpu"]
+    deploy: {}
+    environment:
+      - CLI_ARGS=--cpu
