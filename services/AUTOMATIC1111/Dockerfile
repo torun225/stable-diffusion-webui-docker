@@ -20,9 +20,10 @@ FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN echo "deb http://ftp.jp.debian.org/debian/ bullseye main contrib non-free" > /etc/apt/sources.list
-RUN echo "deb http://deb.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list
-RUN echo "deb http://ftp.jp.debian.org/debian bullseye-updates main contrib" >> /etc/apt/sources.list
+# RUN echo "deb http://ftp.jp.debian.org/debian/ bullseye main contrib non-free" > /etc/apt/sources.list
+# RUN echo "deb http://deb.debian.org/debian-security bullseye-security main" >> /etc/apt/sources.list
+# RUN echo "deb http://ftp.jp.debian.org/debian bullseye-updates main contrib" >> /etc/apt/sources.list
+
 RUN --mount=type=cache,target=/var/cache/apt   apt-get update && apt-get install -y libsepol-dev
 RUN --mount=type=cache,target=/var/cache/apt \
   apt-get update && \
@@ -63,9 +64,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
   pip install pyngrok xformers \
-  git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
-  git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
-  git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b
+  git+https://github.com/TencentARC/GFPGAN.git \
+  git+https://github.com/openai/CLIP.git \
+  git+https://github.com/mlfoundations/open_clip.git
 
 
 COPY . /docker
